@@ -36,8 +36,11 @@ class SyncCredentials(APIView):
     def post(self, request, format=None):
         session = requests.Session()
         # Get the login credentials for the user
-        username = request.data['username']
-        password = request.data['password']
+        try:
+            username = request.data['username']
+            password = request.data['password']
+        except Exception as e:
+            return Response({'error_message': "fields should contain only username and password"})
 
         loginUser_data = {
             'login': username, 'pass': password, 'sub': SUB
